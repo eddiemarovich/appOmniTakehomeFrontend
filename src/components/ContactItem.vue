@@ -1,18 +1,18 @@
 <template>
-  <li class="contact">
+  <li v-on:click="selectedContactId = contactId" class="contact">
     <span class="contact__name">{{ contactName }}</span>
     <img class="contact__chevron" src="../assets/chevron-right.png"/>
   </li>
 </template>
 
 <script>
-
-
 export default {
   name: 'Contact',
   props: {
     contactName: String,
     isSelected: false,
+    selectedContactId: Number || null,
+    contactId: Number
   },
   data: function() {
     return {
@@ -43,12 +43,16 @@ export default {
     align-items: center;
   }
 
-  .contact__name {
-    font-size: 24px;
-  }
-
   .contact:nth-of-type(2n) {
     background-color: #F4F4F4;
+  }
+
+  .contact:hover {
+    background-color: #707070;
+  }
+
+  .contact__name {
+    font-size: 24px;
   }
 
 </style>

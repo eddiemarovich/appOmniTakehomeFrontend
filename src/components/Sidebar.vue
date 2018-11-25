@@ -4,7 +4,7 @@
       <span>Contacts</span>
     </div>
     <ul>
-      <ContactItem v-for="contact in contacts" :contactName="contact"/>
+      <ContactItem v-for="contact in contacts" :selectedContactId='selectedContactId' :contactId="contact.id" :contactName="contact.title"/>
     </ul>
   </div>
 </template>
@@ -15,7 +15,7 @@ import ContactItem from './ContactItem.vue'
 export default {
     name:'Sidebar',
     props: {
-      title: String,
+      selectedContactId: Number || null
     },
     data: function() {
       return {
@@ -30,11 +30,13 @@ export default {
         const contactsRequest = await fetch(`http://localhost:8000/api/contacts`)
         const contactsJson = await contactsRequest.json()
 
-        this.contacts = contactsJson.map(contact => {
-          return contact.title
-        }).sort()
-
-      }
+        this.contacts = contactsJson
+        this.contacts.sort((a, b) => {
+          let textA = a.title.toUpperCase()
+          let textB = b.title.toUpperCase()
+          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0
+        })
+      },
     },
     mounted() {
       this.fetchContacts()
