@@ -3,7 +3,7 @@
     <Header msg="One contact list to rule them all..."/>
     <div class="main-container">
       <Sidebar title="Contact List"/>
-      <DetailsView />
+      <DetailsView :selectedContactId="2"/>
     </div>
   </div>
 </template>
@@ -28,6 +28,7 @@ body {
   margin: 0px;
   font-family: "Lato";
   font-weight: lighter;
+  text-overflow: clip;
 }
 div {
   padding: 0px;

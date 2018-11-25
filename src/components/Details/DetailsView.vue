@@ -1,6 +1,6 @@
 <template>
   <div class="details-container">
-    <NewContactForm />
+    <NewContactForm :selectedContactId="this.selectedContactId"/>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
     }
   },
   props: {
-    selectedContact: null
+    selectedContactId: Number
   },
   components: {
     NewContactForm
