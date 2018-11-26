@@ -1,5 +1,5 @@
 <template>
-  <div class="new-contact">
+  <div v-if='!contactIsSelected' class="new-contact">
     <div class="new-contact__banner">
       <span>Please select a contact from the menu on the left.</span>
       <h3>-OR-</h3>
@@ -16,22 +16,22 @@
         <label class="form-block__label" v-bind:class="{greyed: !name}">
           NUMBER
         </label>
-        <input class="form-block__input"  placeholder="optional" v-bind:class="{ineditable: !name}" v-model="number"/>
+        <input class="form-block__input"  v-bind:class="{ineditable: !name}" v-model="number"/>
       </div>
       <div class="form-block">
         <label class="form-block__label" v-bind:class="{greyed: !name}">
           EMAIL
         </label>
-        <input class="form-block__input"  placeholder="optional" v-bind:class="{ineditable: !name}" v-model="email"/>
+        <input class="form-block__input"  v-bind:class="{ineditable: !name}" v-model="email"/>
       </div>
       <div class="form-block">
         <label class="form-block__label" v-bind:class="{greyed: !name}">
           NICKNAME
         </label>
-        <input class="form-block__input" placeholder="optional"  v-bind:class="{ineditable: !name}" v-model="nickname"/>
+        <input class="form-block__input" v-bind:class="{ineditable: !name}" v-model="nickname"/>
       </div>
     </div>
-    <button class="button" v-on:click="postNewContact" v-bind:class="{nobutton: !name}">SAVE</button>
+    <button class="button" v-on:click="postNewContact" v-bind:class="{nobutton: !name || !number || !email || !nickname}">SAVE</button>
   </div>
 </template>
 
@@ -49,6 +49,9 @@ export default {
         nickname: null
       }
     },
+    props: {
+      contactIsSelected: Boolean
+    },
     methods: {
       postNewContact: async function() {
         const myHeaders = new Headers()
@@ -65,6 +68,11 @@ export default {
             body: JSON.stringify(nameBody)
           })
           const postResult = await postFetchNew.json()
+          this.name = null
+          this.number = null
+          this.email = null
+          this.nickname = null
+          return
         }
         const postFetchNew = await fetch('http://localhost:8000/api/contacts', {
           method: 'POST',
@@ -87,7 +95,8 @@ export default {
         this.number = null
         this.email = null
         this.nickname = null
-      }
+        await this.$emit('postNewContact')
+      },
     }
 }
 

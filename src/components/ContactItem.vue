@@ -1,5 +1,5 @@
 <template>
-  <li v-on:click="selectedContactId = contactId" class="contact">
+  <li v-on:click="" class="contact">
     <span class="contact__name">{{ contactName }}</span>
     <img class="contact__chevron" src="../assets/chevron-right.png"/>
   </li>
@@ -10,9 +10,7 @@ export default {
   name: 'Contact',
   props: {
     contactName: String,
-    isSelected: false,
-    selectedContactId: Number || null,
-    contactId: Number
+    isSelected: Boolean,    
   },
   data: function() {
     return {

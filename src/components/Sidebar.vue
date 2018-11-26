@@ -4,7 +4,12 @@
       <span>Contacts</span>
     </div>
     <ul>
-      <ContactItem v-for="contact in contacts" :selectedContactId='selectedContactId' :contactId="contact.id" :contactName="contact.title"/>
+      <ContactItem
+        v-for="contact in contacts"
+        v-on:click.native="selectContact(contact)"
+        :isSelected="contact.id === selectedContactId"
+        :contactName="contact.title"
+      />
     </ul>
   </div>
 </template>
@@ -15,32 +20,18 @@ import ContactItem from './ContactItem.vue'
 export default {
     name:'Sidebar',
     props: {
-      selectedContactId: Number || null
-    },
-    data: function() {
-      return {
-        contacts: []
-      }
+      selectedContactId: Number || null,
+      contacts: Array
     },
     components: {
       ContactItem
     },
     methods: {
-      fetchContacts: async function() {
-        const contactsRequest = await fetch(`http://localhost:8000/api/contacts`)
-        const contactsJson = await contactsRequest.json()
-
-        this.contacts = contactsJson
-        this.contacts.sort((a, b) => {
-          let textA = a.title.toUpperCase()
-          let textB = b.title.toUpperCase()
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0
-        })
-      },
-    },
-    mounted() {
-      this.fetchContacts()
+      selectContact: function(contact) {
+        this.$emit('selectContact', contact)
+      }
     }
+    
   }
 </script>
 
