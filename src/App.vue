@@ -23,7 +23,6 @@
 <script>
 import Header from './components/Header.vue'
 import Sidebar from './components/Sidebar.vue'
-import DetailsView from './components/Details/DetailsView.vue'
 import NewContactForm from './components/Details/NewContactForm.vue'
 import ContactDetails from './components/Details/ContactDetails.vue'
 
@@ -40,7 +39,6 @@ export default {
   components: {
     Header,
     Sidebar,
-    DetailsView,
     NewContactForm,
     ContactDetails
   },
@@ -61,7 +59,7 @@ export default {
       myHeaders.append('Content-Type', 'application/json; charset=utf-8')
       myHeaders.append('access-control-allow-origin', '*')
 
-      const deleteFetch = await fetch(`http://localhost:8000/api/contacts/${id}`, {
+      await fetch(`http://localhost:8000/api/contacts/${id}`, {
         method: 'DELETE',
         headers: myHeaders
       })
