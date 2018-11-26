@@ -1,11 +1,13 @@
 <template>
   <div class="details-container">
-    <NewContactForm />
+    <NewContactForm :contactIsSelected='selectedContact !== null' />
+    <ContactDetails :selectedContact='selectedContact' />
   </div>
 </template>
 
 <script>
 import NewContactForm from './NewContactForm.vue'
+import ContactDetails from './ContactDetails.vue'
 
 export default {
   name: 'DetailsView',
@@ -15,10 +17,11 @@ export default {
     }
   },
   props: {
-    selectedContact: null
+    selectedContact: Object | null
   },
   components: {
-    NewContactForm
+    NewContactForm,
+    ContactDetails
   }
 }
 

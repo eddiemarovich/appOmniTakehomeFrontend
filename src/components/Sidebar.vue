@@ -3,8 +3,13 @@
     <div class="sidebar__title">
       <span>Contacts</span>
     </div>
-    <ul >
-      <ContactItem v-for="contact in contacts" :contactName="contact"/>
+    <ul>
+      <ContactItem
+        v-for="contact in contacts"
+        v-on:click.native="selectContact(contact)"
+        :isSelected="contact.id === selectedContactId"
+        :contactName="contact.title"
+      />
     </ul>
   </div>
 </template>
@@ -15,36 +20,18 @@ import ContactItem from './ContactItem.vue'
 export default {
     name:'Sidebar',
     props: {
-      title: String,
-    },
-    data: function() {
-      return {
-        contacts: []
-      }
+      selectedContactId: Number || null,
+      contacts: Array
     },
     components: {
       ContactItem
     },
     methods: {
-      fetchContacts: async function() {
-        const myHeaders = new Headers()
-        myHeaders.append('Content-Type', 'application/json')
-        myHeaders.append('Accept', 'application/json')
-
-        const contactsRequest = await fetch(`http://localhost:8000/api/contacts`, {
-          headers: myHeaders
-        })
-
-        const contactsJson = await contactsRequest.json()
-        this.contacts = contactsJson.map(contact => {
-          return contact.title
-        }).sort()
-
+      selectContact: function(contact) {
+        this.$emit('selectContact', contact)
       }
-    },
-    mounted() {
-      this.fetchContacts()
     }
+    
   }
 </script>
 
@@ -57,6 +44,7 @@ export default {
     margin: 0px;
     padding: 0px;
     list-style-type: none;
+
   }
 
   .sidebar__title {
@@ -72,5 +60,9 @@ export default {
     width: 25vw;
     border-right: solid 1px #707070;
     height: 85vh;
+    position: fixed;
+    top: 15vh;
+    bottom: 0;
+    overflow: scroll;
   }
 </style>
